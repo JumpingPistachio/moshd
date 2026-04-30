@@ -1,2 +1,2 @@
 # moshd
-A tool for images that like to rock.
+A tool for people whose images are too high-fidelity.
