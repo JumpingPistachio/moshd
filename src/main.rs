@@ -39,16 +39,42 @@ enum Commands {
 // -- Execution --
 fn main() {
     let args = CLI::parse();
+    let in_img: DynamicImage;
+    let out_img: DynamicImage;
 
-    let oimg: DynamicImage;
+    // Get input value only
+    let in_result = match &args.command {
+        Commands::Relay { input, ..} => image::open(input),
+        Commands::Slice3d { input, .. } => image::open(input)
+    };
 
+    // User-friendly error handling, ensures iimg is valid.
+    match in_result {
+        Ok(img) => {
+            in_img = img;
+        },
+        Err(msg) => {
+            println!("\nInput Error");
+            println!("Error Message: {}\n", msg);
+            return;
+        }
+    }
+    
     match args.command {
-        Commands::Relay { input, modifier } => { oimg = algorithms::relay(input, modifier) },
-        Commands::Slice3d { input, modifier } => { oimg = algorithms::slice_3d(input, modifier) }
+        Commands::Relay { modifier, .. } => { out_img = algorithms::relay(in_img, modifier) },
+        Commands::Slice3d { modifier, .. } => { out_img = algorithms::slice_3d(in_img, modifier) }
     }
 
-    oimg.save(&args.output).expect("Error in handling output path");
+    // User-friendly error handling, ensures oimg is actually saved
+    match out_img.save(&args.output) {
+        Ok(..) => {},
+        Err(msg) => {
+            println!("\nOutput Error");
+            println!("Error Message: {}\n", msg);
+            return;
+        }
+    }
 
-    print!("File saved at: {}\n\n", &args.output);
+    println!("File saved at: {}\n", &args.output);
 
 }

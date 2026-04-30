@@ -1,10 +1,6 @@
-use image::{DynamicImage, ImageReader, Rgb};
+use image::{DynamicImage, Rgb};
 
-pub fn relay(path: String, modifier: i32) -> DynamicImage {
-    // Input image from path
-    let iimg = ImageReader::open(path)
-        .expect("Path missing or invalid").decode().expect("File decoding error");
-
+pub fn relay(iimg: DynamicImage, modifier: i32) -> DynamicImage {
     // Buffer (whole image) and Pixel (individual pixel) 
     let mut buf = iimg.into_rgb8();
     let mut pix_lead: Rgb<u8>;
@@ -30,15 +26,11 @@ pub fn relay(path: String, modifier: i32) -> DynamicImage {
         }
     }
 
-    print!("\nModifier: {}\n", n);
+    println!("\nModifier: {}", n);
     return DynamicImage::ImageRgb8(buf);
 }
 
-pub fn slice_3d(path: String, modifier: i32) -> DynamicImage {
-    // Input image from path
-    let iimg = ImageReader::open(path)
-        .expect("Path missing or invalid").decode().expect("File decoding error");
-
+pub fn slice_3d(iimg: DynamicImage, modifier: i32) -> DynamicImage {
     // Buffer (whole image) and Pixel (individual pixel) 
     let mut buf = iimg.into_rgb8();
     let orig_buf = buf.clone();
@@ -58,4 +50,5 @@ pub fn slice_3d(path: String, modifier: i32) -> DynamicImage {
 
     return DynamicImage::ImageRgb8(buf);
 }
+
 
