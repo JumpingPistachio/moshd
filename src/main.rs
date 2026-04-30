@@ -30,7 +30,7 @@ enum Commands {
     /// 3D mirror slice effect 
     Slice3d {
         input: String,
-        /// How spaced out should the slices be
+        /// How spaced out the slices should be (larger number, lesser effect)
         #[arg(short, long, default_value_t=7)]
         modifier:i32
     }
@@ -47,7 +47,7 @@ fn main() {
         Commands::Slice3d { input, modifier } => { oimg = algorithms::slice_3d(input, modifier) }
     }
 
-    oimg.save(&args.output);
+    oimg.save(&args.output).expect("Error in handling output path");
 
     print!("File saved at: {}\n\n", &args.output);
 

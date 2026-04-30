@@ -23,7 +23,7 @@ pub fn relay(path: String, modifier: i32) -> DynamicImage {
         pix_lead = *buf.get_pixel(x, 0);
         
         for y in 0..(buf.height()){
-            if (y % n == 0){
+            if y % n == 0 {
                 pix_lead = *buf.get_pixel(x, y);
             }
             buf.put_pixel(x, y, pix_lead); 
